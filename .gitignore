@@ -1,0 +1,25 @@
+# Project Documentation
+MediTrack*.md
+*.pdf
+*.doc
+*.docx
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Local development
+*.local

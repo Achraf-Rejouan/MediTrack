@@ -1,0 +1,13 @@
+<mat-toolbar color="primary">
+  <span>MediTrack</span>
+  <span class="spacer"></span>
+  <ng-container *ngIf="!authService.isLoggedIn(); else loggedIn">
+    <button mat-button routerLink="/login">Login</button>
+    <button mat-button routerLink="/register">Register</button>
+  </ng-container>
+  <ng-template #loggedIn>
+    <span class="username">{{ authService.getCurrentUserValue()?.username }}</span>
+    <button mat-button (click)="logout()">Logout</button>
+  </ng-template>
+</mat-toolbar>
+
