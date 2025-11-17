@@ -1,13 +1,27 @@
-<mat-toolbar color="primary">
-  <span>MediTrack</span>
-  <span class="spacer"></span>
-  <ng-container *ngIf="!authService.isLoggedIn(); else loggedIn">
-    <button mat-button routerLink="/login">Login</button>
-    <button mat-button routerLink="/register">Register</button>
-  </ng-container>
-  <ng-template #loggedIn>
-    <span class="username">{{ authService.getCurrentUserValue()?.username }}</span>
-    <button mat-button (click)="logout()">Logout</button>
-  </ng-template>
-</mat-toolbar>
+<mat-toolbar color="primary" class="navbar-container">
+  <div class="navbar-content">
+    <div class="logo-section">
+      <span class="logo">MediTrack</span>
+    </div>
 
+    <div class="nav-links">
+      <ng-container *ngIf="!authService.isLoggedIn(); else loggedIn">
+        <button mat-button routerLink="/login" class="nav-button">
+          Login
+        </button>
+        <button mat-button routerLink="/register" class="nav-button">
+          Register
+        </button>
+      </ng-container>
+      <ng-template #loggedIn>
+        <button mat-button routerLink="/book-appointment" class="nav-button">
+          Book Appointment
+        </button>
+        <span class="username">{{ authService.getCurrentUserValue()?.username }}</span>
+        <button mat-button (click)="logout()" class="logout-button">
+          Logout
+        </button>
+      </ng-template>
+    </div>
+  </div>
+</mat-toolbar>

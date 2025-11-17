@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1>Book an Appointment</h1>
+      <p>Schedule a consultation with a qualified doctor</p>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+
+        <!-- Doctor Selection -->
+        <div class="form-group">
+          <label for="doctor">Select Doctor *</label>
+          <select id="doctor" formControlName="doctorId" class="form-control">
+            <option value="">-- Choose a Doctor --</option>
+            <option *ngFor="let doctor of doctors" [value]="doctor.id">
+              Dr. {{ doctor.firstName }} {{ doctor.lastName }} ({{ doctor.specialization }})
+            </option>
+          </select>
+          <small class="text-error" *ngIf="appointmentForm.get('doctorId')?.hasError('required') && appointmentForm.get('doctorId')?.touched">
+            Please select a doctor
+          </small>
+        </div>
+
+        <!-- Date and Time Selection -->
+        <div class="form-group">
+          <label for="datetime">Date & Time *</label>
+          <input id="datetime" type="datetime-local" formControlName="appointmentDateTime"
+                 class="form-control" min="{{ minDateTime }}">
+          <small class="text-error" *ngIf="appointmentForm.get('appointmentDateTime')?.hasError('required') && appointmentForm.get('appointmentDateTime')?.touched">
+            Please select date and time
+          </small>
+        </div>
+
+        <!-- Reason for Visit -->
+        <div class="form-group">
+          <label for="reason">Reason for Visit *</label>
+          <textarea id="reason" formControlName="reason" class="form-control"
+                    rows="4" placeholder="Describe your symptoms or reason for the visit"></textarea>
+          <small class="text-muted">{{ appointmentForm.get('reason')?.value?.length || 0 }}/500</small>
+          <small class="text-error" *ngIf="appointmentForm.get('reason')?.hasError('required') && appointmentForm.get('reason')?.touched">
+            Please provide a reason
+          </small>
+          <small class="text-error" *ngIf="appointmentForm.get('reason')?.hasError('maxlength')">
+            Reason cannot exceed 500 characters
+          </small>
+        </div>
+
+        <!-- Error Message -->
+        <div class="alert alert-error" *ngIf="errorMessage" role="alert">
+          <strong>Error:</strong> {{ errorMessage }}
+        </div>
+
+        <!-- Success Message -->
+        <div class="alert alert-success" *ngIf="successMessage" role="status">
+          <strong>Success:</strong> {{ successMessage }}
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-buttons">
+          <button type="submit" class="btn btn-primary" [disabled]="!appointmentForm.valid || loading">
+            {{ loading ? 'Booking...' : 'Book Appointment' }}
+          </button>
+          <button type="button" class="btn btn-secondary" routerLink="/dashboard">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

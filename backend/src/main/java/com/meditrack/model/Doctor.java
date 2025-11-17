@@ -11,6 +11,12 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "doctors")
 public class Doctor extends User {
+    @Column(nullable = true)
+    private String firstName;
+
+    @Column(nullable = true)
+    private String lastName;
+
     @Column(nullable = false)
     private String specialty;
 

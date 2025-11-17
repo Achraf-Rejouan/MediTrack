@@ -25,15 +25,43 @@ public class DatabaseInitializer {
                 userRepository.save(admin);
             }
 
-            // Create doctor if not exists
-            if (!userRepository.existsByUsername("doctor")) {
-                Doctor doctor = new Doctor();
-                doctor.setUsername("doctor");
-                doctor.setEmail("doctor@meditrack.com");
-                doctor.setPassword(passwordEncoder.encode("doctor123"));
-                doctor.setRole(Role.DOCTOR);
-                doctor.setSpecialty("General Medicine");
-                userRepository.save(doctor);
+            // Create doctor1 if not exists
+            if (!userRepository.existsByUsername("doctor1")) {
+                Doctor doctor1 = new Doctor();
+                doctor1.setUsername("doctor1");
+                doctor1.setEmail("doctor1@meditrack.com");
+                doctor1.setPassword(passwordEncoder.encode("doctor123"));
+                doctor1.setRole(Role.DOCTOR);
+                doctor1.setFirstName("John");
+                doctor1.setLastName("Smith");
+                doctor1.setSpecialty("General Medicine");
+                userRepository.save(doctor1);
+            }
+
+            // Create doctor2 if not exists
+            if (!userRepository.existsByUsername("doctor2")) {
+                Doctor doctor2 = new Doctor();
+                doctor2.setUsername("doctor2");
+                doctor2.setEmail("doctor2@meditrack.com");
+                doctor2.setPassword(passwordEncoder.encode("doctor123"));
+                doctor2.setRole(Role.DOCTOR);
+                doctor2.setFirstName("Sarah");
+                doctor2.setLastName("Johnson");
+                doctor2.setSpecialty("Cardiology");
+                userRepository.save(doctor2);
+            }
+
+            // Create doctor3 if not exists
+            if (!userRepository.existsByUsername("doctor3")) {
+                Doctor doctor3 = new Doctor();
+                doctor3.setUsername("doctor3");
+                doctor3.setEmail("doctor3@meditrack.com");
+                doctor3.setPassword(passwordEncoder.encode("doctor123"));
+                doctor3.setRole(Role.DOCTOR);
+                doctor3.setFirstName("Michael");
+                doctor3.setLastName("Brown");
+                doctor3.setSpecialty("Neurology");
+                userRepository.save(doctor3);
             }
         };
     }
