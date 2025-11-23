@@ -12,3 +12,17 @@ export interface Doctor {
     lastName: string;
     specialization: string;
 }
+
+export interface AppointmentResponse {
+    id: number;
+    doctor: Doctor;
+    patient: {
+        id: number;
+        username: string;
+    };
+    appointmentDateTime: Date;
+    reason?: string;
+    status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+    version: number;
+}
+

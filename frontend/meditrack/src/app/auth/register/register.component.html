@@ -1,59 +1,100 @@
 <div class="register-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Create an Account</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+  <button mat-icon-button (click)="toggleTheme()" class="theme-toggle-button" [attr.aria-label]="'Toggle theme'">
+    <img 
+      [src]="currentTheme === 'light' ? 'assets/darkMode.png' : 'assets/lightMode.png'" 
+      [alt]="currentTheme === 'light' ? 'Dark mode' : 'Light mode'"
+      class="theme-icon">
+  </button>
+  <div class="register-card">
+    <div class="card-header">
+      <div class="logo-wrapper">
+        <h1 class="card-title">Create Account</h1>
+        <p class="card-subtitle">Join MediTrack today</p>
+      </div>
+    </div>
+
+    <div class="card-content">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline">
+        <!-- Error Message Display -->
+        <div class="error-message" *ngIf="registerError">
+          <mat-icon class="error-icon">error_outline</mat-icon>
+          <span>{{ registerError }}</span>
+        </div>
+
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Username</mat-label>
-          <input matInput formControlName="username" required>
-          <mat-error *ngIf="registerForm.get('username')?.hasError('required')">
-            Username is required
+          <input matInput formControlName="username" required autocomplete="username">
+          <mat-error *ngIf="registerForm.get('username')?.hasError('required') && registerForm.get('username')?.touched">
+            {{ getErrorMessage('username') }}
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" required>
-          <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
-            Email is required
+          <input matInput type="email" formControlName="email" required autocomplete="email">
+          <mat-error *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">
+            {{ getErrorMessage('email') }}
           </mat-error>
-          <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
-            Please enter a valid email address
+          <mat-error *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched">
+            {{ getErrorMessage('email') }}
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" required>
-          <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
-            Password is required
+          <input 
+            matInput 
+            [type]="hidePassword ? 'password' : 'text'" 
+            formControlName="password" 
+            required
+            autocomplete="new-password">
+          <button 
+            mat-icon-button 
+            matSuffix 
+            (click)="togglePasswordVisibility()" 
+            type="button"
+            [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+            [attr.aria-pressed]="!hidePassword">
+            <img 
+              [src]="hidePassword ? 'assets/open_eye.png' : 'assets/eye_close.png'" 
+              [alt]="hidePassword ? 'Show password' : 'Hide password'"
+              class="eye-icon">
+          </button>
+          <mat-error *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
+            {{ getErrorMessage('password') }}
           </mat-error>
-          <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
-            Password must be at least 6 characters long
+          <mat-error *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched">
+            {{ getErrorMessage('password') }}
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Phone Number</mat-label>
-          <input matInput formControlName="phone" required>
-          <mat-error *ngIf="registerForm.get('phone')?.hasError('required')">
-            Phone number is required
+          <input matInput type="tel" formControlName="phone" required autocomplete="tel">
+          <mat-error *ngIf="registerForm.get('phone')?.hasError('required') && registerForm.get('phone')?.touched">
+            {{ getErrorMessage('phone') }}
           </mat-error>
-          <mat-error *ngIf="registerForm.get('phone')?.hasError('pattern')">
-            Please enter a valid phone number
+          <mat-error *ngIf="registerForm.get('phone')?.hasError('pattern') && registerForm.get('phone')?.touched">
+            {{ getErrorMessage('phone') }}
           </mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid || isLoading">
-          <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+        <button 
+          mat-raised-button 
+          type="submit" 
+          class="submit-button"
+          [disabled]="registerForm.invalid || isLoading">
+          <mat-spinner diameter="20" *ngIf="isLoading" class="button-spinner"></mat-spinner>
           <span *ngIf="!isLoading">Register</span>
         </button>
       </form>
-    </mat-card-content>
-    <mat-card-actions>
-      <a mat-button routerLink="/login">Already have an account? Login here</a>
-    </mat-card-actions>
-  </mat-card>
+    </div>
+
+    <div class="card-footer">
+      <p class="footer-text">
+        Already have an account? 
+        <a routerLink="/login" class="footer-link">Login here</a>
+      </p>
+    </div>
+  </div>
 </div>

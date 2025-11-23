@@ -1,37 +1,78 @@
 <div class="login-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Login to MediTrack</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+  <button mat-icon-button (click)="toggleTheme()" class="theme-toggle-button" [attr.aria-label]="'Toggle theme'">
+    <img 
+      [src]="currentTheme === 'light' ? 'assets/darkMode.png' : 'assets/lightMode.png'" 
+      [alt]="currentTheme === 'light' ? 'Dark mode' : 'Light mode'"
+      class="theme-icon">
+  </button>
+  <div class="login-card">
+    <div class="card-header">
+      <div class="logo-wrapper">
+        <h1 class="card-title">Welcome Back</h1>
+        <p class="card-subtitle">Login to your MediTrack account</p>
+      </div>
+    </div>
+
+    <div class="card-content">
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline">
+        <!-- Error Message Display -->
+        <div class="error-message" *ngIf="loginError">
+          <mat-icon class="error-icon">error_outline</mat-icon>
+          <span>{{ loginError }}</span>
+        </div>
+
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Username</mat-label>
-          <input matInput formControlName="username" required>
-          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
-            Username is required
+          <input matInput formControlName="username" required autocomplete="username">
+          <mat-error *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched">
+            {{ getErrorMessage('username') }}
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="form-field">
           <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" required>
-          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-            Password is required
+          <input 
+            matInput 
+            [type]="hidePassword ? 'password' : 'text'" 
+            formControlName="password" 
+            required
+            autocomplete="current-password">
+          <button 
+            mat-icon-button 
+            matSuffix 
+            (click)="togglePasswordVisibility()" 
+            type="button"
+            [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+            [attr.aria-pressed]="!hidePassword">
+            <img 
+              [src]="hidePassword ? 'assets/open_eye.png' : 'assets/eye_close.png'" 
+              [alt]="hidePassword ? 'Show password' : 'Hide password'"
+              class="eye-icon">
+          </button>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+            {{ getErrorMessage('password') }}
           </mat-error>
-          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-            Password must be at least 6 characters long
+          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched">
+            {{ getErrorMessage('password') }}
           </mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading">
-          <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+        <button 
+          mat-raised-button 
+          type="submit" 
+          class="submit-button"
+          [disabled]="loginForm.invalid || isLoading">
+          <mat-spinner diameter="20" *ngIf="isLoading" class="button-spinner"></mat-spinner>
           <span *ngIf="!isLoading">Login</span>
         </button>
       </form>
-    </mat-card-content>
-    <mat-card-actions>
-      <a mat-button routerLink="/register">Don't have an account? Register here</a>
-    </mat-card-actions>
-  </mat-card>
+    </div>
+
+    <div class="card-footer">
+      <p class="footer-text">
+        Don't have an account? 
+        <a routerLink="/register" class="footer-link">Register here</a>
+      </p>
+    </div>
+  </div>
 </div>

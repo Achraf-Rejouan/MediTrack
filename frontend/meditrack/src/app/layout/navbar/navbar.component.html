@@ -1,27 +1,112 @@
-<mat-toolbar color="primary" class="navbar-container">
+<mat-toolbar class="navbar-container">
   <div class="navbar-content">
     <div class="logo-section">
-      <span class="logo">MediTrack</span>
+      <span class="logo">
+        <span class="logo-text">MediTrack</span>
+      </span>
     </div>
 
-    <div class="nav-links">
+    <!-- Desktop Navigation -->
+    <div class="nav-links desktop-nav">
       <ng-container *ngIf="!authService.isLoggedIn(); else loggedIn">
         <button mat-button routerLink="/login" class="nav-button">
           Login
         </button>
-        <button mat-button routerLink="/register" class="nav-button">
+        <button mat-raised-button routerLink="/register" class="nav-button register-btn">
           Register
         </button>
       </ng-container>
       <ng-template #loggedIn>
-        <button mat-button routerLink="/book-appointment" class="nav-button">
-          Book Appointment
-        </button>
-        <span class="username">{{ authService.getCurrentUserValue()?.username }}</span>
-        <button mat-button (click)="logout()" class="logout-button">
-          Logout
-        </button>
+        <!-- Patient Navigation -->
+        <ng-container *ngIf="authService.getCurrentUserValue()?.role === 'PATIENT'">
+          <button mat-button routerLink="/book-appointment" class="nav-button" (click)="closeMobileMenu()">
+            Book Appointment
+          </button>
+          <button mat-button routerLink="/my-appointments" class="nav-button" (click)="closeMobileMenu()">
+            My Appointments
+          </button>
+        </ng-container>
+
+        <!-- Doctor Navigation -->
+        <ng-container *ngIf="authService.getCurrentUserValue()?.role === 'DOCTOR'">
+          <button mat-button routerLink="/doctor-dashboard" class="nav-button" (click)="closeMobileMenu()">
+            Dashboard
+          </button>
+        </ng-container>
+
+        <!-- Admin Navigation -->
+        <ng-container *ngIf="authService.getCurrentUserValue()?.role === 'ADMIN'">
+          <button mat-button routerLink="/admin-dashboard" class="nav-button" (click)="closeMobileMenu()">
+            Admin Dashboard
+          </button>
+        </ng-container>
+
+        <div class="user-section">
+          <span class="username">
+            <span class="username-text">{{ authService.getCurrentUserValue()?.username }}</span>
+          </span>
+          <button mat-icon-button (click)="toggleTheme()" class="theme-toggle" [attr.aria-label]="'Toggle theme'">
+            <img 
+              [src]="currentTheme === 'light' ? 'assets/darkMode.png' : 'assets/lightMode.png'" 
+              [alt]="currentTheme === 'light' ? 'Dark mode' : 'Light mode'"
+              class="theme-icon">
+          </button>
+          <button mat-button (click)="logout()" class="logout-button">
+            <span class="nav-text">Logout</span>
+          </button>
+        </div>
       </ng-template>
     </div>
+
+    <!-- Mobile Navigation (only for logged-in users) -->
+    <ng-container *ngIf="authService.isLoggedIn()">
+      <div class="mobile-nav">
+        <button mat-icon-button (click)="toggleMobileMenu()" class="mobile-menu-button" [attr.aria-label]="'Toggle menu'">
+          <img src="assets/navbar.png" alt="Menu" class="menu-icon">
+        </button>
+        <button mat-icon-button (click)="toggleTheme()" class="theme-toggle mobile-theme-toggle" [attr.aria-label]="'Toggle theme'">
+          <img 
+            [src]="currentTheme === 'light' ? 'assets/darkMode.png' : 'assets/lightMode.png'" 
+            [alt]="currentTheme === 'light' ? 'Dark mode' : 'Light mode'"
+            class="theme-icon">
+        </button>
+      </div>
+
+      <!-- Mobile Menu Dropdown -->
+      <div class="mobile-menu" [class.open]="mobileMenuOpen" *ngIf="mobileMenuOpen">
+        <div class="mobile-menu-content">
+          <!-- Patient Navigation -->
+          <ng-container *ngIf="authService.getCurrentUserValue()?.role === 'PATIENT'">
+            <button mat-button routerLink="/book-appointment" class="mobile-nav-button" (click)="closeMobileMenu()">
+              Book Appointment
+            </button>
+            <button mat-button routerLink="/my-appointments" class="mobile-nav-button" (click)="closeMobileMenu()">
+              My Appointments
+            </button>
+          </ng-container>
+
+          <!-- Doctor Navigation -->
+          <ng-container *ngIf="authService.getCurrentUserValue()?.role === 'DOCTOR'">
+            <button mat-button routerLink="/doctor-dashboard" class="mobile-nav-button" (click)="closeMobileMenu()">
+              Dashboard
+            </button>
+          </ng-container>
+
+          <!-- Admin Navigation -->
+          <ng-container *ngIf="authService.getCurrentUserValue()?.role === 'ADMIN'">
+            <button mat-button routerLink="/admin-dashboard" class="mobile-nav-button" (click)="closeMobileMenu()">
+              Admin Dashboard
+            </button>
+          </ng-container>
+
+          <div class="mobile-user-section">
+            <span class="mobile-username">{{ authService.getCurrentUserValue()?.username }}</span>
+            <button mat-button (click)="logout()" class="mobile-logout-button">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </mat-toolbar>

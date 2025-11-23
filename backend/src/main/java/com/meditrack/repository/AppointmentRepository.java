@@ -19,4 +19,19 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByDoctorId(Long doctorId);
 
     List<Appointment> findByPatientId(Long patientId);
+
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId AND a.status = 'PENDING' ORDER BY a.appointmentDateTime ASC")
+    List<Appointment> findPendingAppointmentsByDoctorId(@Param("doctorId") Long doctorId);
+
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId AND a.status = 'APPROVED' ORDER BY a.appointmentDateTime ASC")
+    List<Appointment> findApprovedAppointmentsByDoctorId(@Param("doctorId") Long doctorId);
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.status = :status")
+    Long countByStatus(@Param("status") Appointment.AppointmentStatus status);
+
+    @Query("SELECT COUNT(DISTINCT a.patient.id) FROM Appointment a")
+    Long countDistinctPatients();
+
+    @Query("SELECT COUNT(DISTINCT a.doctor.id) FROM Appointment a")
+    Long countDistinctDoctors();
 }

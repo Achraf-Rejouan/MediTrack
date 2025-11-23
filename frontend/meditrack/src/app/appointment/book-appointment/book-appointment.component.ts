@@ -80,7 +80,7 @@ export class BookAppointmentComponent implements OnInit {
           this.successMessage = 'Appointment booked successfully!';
           this.loading = false;
           setTimeout(() => {
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/my-appointments']);
           }, 2000);
         },
         error: (error) => {

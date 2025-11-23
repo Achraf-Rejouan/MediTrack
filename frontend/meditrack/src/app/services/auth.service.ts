@@ -47,6 +47,11 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  getUserRole(): string | null {
+    const currentUser = this.currentUserSubject.value;
+    return currentUser ? currentUser.role : null;
+  }
+
   isLoggedIn(): boolean {
     return !!this.currentUserSubject.value;
   }
